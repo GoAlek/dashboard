@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import {UsersContext} from '../hooks/useUsers';
 
 export const UserList = () => {
@@ -17,7 +17,10 @@ export const UserList = () => {
   return (
     <>
       <div className="ui segment">
-        <p>User list</p>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <h4>User list</h4>
+          <div className="ui blue button">Add new</div>
+        </div>
         <table className="ui compact celled definition table">
           <thead>
             <tr>
