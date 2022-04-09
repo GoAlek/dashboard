@@ -5,14 +5,8 @@ import {Delete} from './Delete';
 
 export const UserList = () => {
   const {state, dispatch} = useContext(UsersContext);
-  const [userToDelete, setUserToDelete] = useState();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  
-  const handleModalToggle = useCallback((user) => {
-    setUserToDelete(user);
-    setIsDeleteModalOpen(!isDeleteModalOpen);
-  }, [isDeleteModalOpen]);
-  
+  const [userToDelete, setUserToDelete] = useState(undefined);
+
   const fetchUsers = useCallback(async () => {
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data')
       .then((response) => response.json())
@@ -61,7 +55,7 @@ export const UserList = () => {
                   </Link>
                 </td>
                 <td data-label="Delete">
-                  <div className="ui red button" onClick={() => handleModalToggle(user)}>
+                  <div className="ui red button" onClick={() => setUserToDelete(user)}>
                     delete
                   </div>
                 </td>
@@ -70,10 +64,10 @@ export const UserList = () => {
           </tbody>
         </table>
       </div>
-      {isDeleteModalOpen && (
+      {userToDelete && (
         <Delete
           user={userToDelete}
-          onDismiss={() => setIsDeleteModalOpen(false)}
+          onDismiss={() => setUserToDelete(undefined)}
         />
       )}
     </>
