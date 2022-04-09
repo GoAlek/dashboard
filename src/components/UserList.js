@@ -61,7 +61,7 @@ export const UserList = () => {
                 </td>
                 {isDeleteModalOpen && (
                   <Delete
-                    userId={user.id}
+                    user={user}
                     onDismiss={() => setIsDeleteModalOpen(false)}
                   />
                 )}
