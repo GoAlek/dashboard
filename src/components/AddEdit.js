@@ -18,8 +18,10 @@ export const AddEdit = () => {
   if (userId) {
     editedUser = state.usersObj[id];
   }
-  const [name, setName] = useState(editedUser?.name);
-  const [email, setEmail] = useState(editedUser?.email);
+  const initialName = editedUser ? editedUser.name : '';
+  const initialEmail = editedUser ? editedUser.email : '';
+  const [name, setName] = useState(initialName);
+  const [email, setEmail] = useState(initialEmail);
 
   const createUser = useCallback(async (event) => {
     event.preventDefault();
