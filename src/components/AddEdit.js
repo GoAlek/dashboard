@@ -1,12 +1,18 @@
 import React, {useCallback, useContext, useId, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {UsersContext} from '../hooks/useUsers';
 
 export const AddEdit = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const navigate = useNavigate();
+  const { userId } = useParams();
   const {state, dispatch} = useContext(UsersContext);
+  let editedUser;
+  if (userId) {
+    const id = Number.parseInt(userId, 10);
+    editedUser = state.usersObj[id];
+  }
+  const [name, setName] = useState(editedUser?.name);
+  const [email, setEmail] = useState(editedUser?.email);
+  const navigate = useNavigate();
 
   const allIds = Object.keys(state.usersObj).map(k => Number.parseInt(k, 10));
   const nextId = useCallback(() => {

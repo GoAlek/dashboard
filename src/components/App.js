@@ -16,7 +16,7 @@ const App = () => {
           <Routes>
             <Route path="/" exact element={<UserList/>}/>
             <Route path="/add" exact element={<AddEdit/>}/>
-            <Route path="/edit" exact element={<AddEdit/>}/>
+            <Route path="/edit/:userId" exact element={<AddEdit/>}/>
           </Routes>
         </BrowserRouter>
       </div>

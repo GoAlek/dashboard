@@ -48,7 +48,7 @@ export const UserList = () => {
                 <td data-label="Email">{user.email}</td>
                 <td data-label="City">{user.address?.city}</td>
                 <td data-label="Edit">
-                  <Link to="/edit">
+                  <Link to={`/edit/${user.id}`}>
                     <div className="ui yellow button">edit</div>
                   </Link>
                 </td>
