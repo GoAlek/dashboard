@@ -6,7 +6,13 @@ export const AddEdit = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const navigate = useNavigate();
-  const {dispatch} = useContext(UsersContext);
+  const {state, dispatch} = useContext(UsersContext);
+
+  const allIds = Object.keys(state.usersObj).map(k => Number.parseInt(k, 10));
+  const nextId = useCallback(() => {
+    const maxId = Math.max(...allIds);
+    return  maxId + 1;
+  }, [allIds]);
 
   const createUser = useCallback(async (event) => {
     event.preventDefault();
@@ -14,6 +20,7 @@ export const AddEdit = () => {
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data', {
       method: 'POST',
       body: JSON.stringify({
+        id: nextId(),
         name,
         email,
       }),
@@ -23,7 +30,7 @@ export const AddEdit = () => {
     }).then((response) => response.json())
       .then((user) => dispatch({type: 'add', user}))
       .finally(() => navigate('/'));
-  }, [dispatch, email, name, navigate]);
+  }, [dispatch, email, name, navigate, nextId]);
 
   const nameId = useId();
   const emailId = useId();
