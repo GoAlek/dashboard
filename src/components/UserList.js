@@ -18,7 +18,7 @@ export const UserList = () => {
   return (
     <>
       <div className="ui segment">
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div style={{display: 'flex', alignItems: 'baseline', justifyContent: 'space-between'}}>
           <h4>User list</h4>
           <Link to="/add">
             <div className="ui blue button">Add new</div>

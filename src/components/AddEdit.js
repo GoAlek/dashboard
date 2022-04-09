@@ -15,7 +15,7 @@ export const AddEdit = () => {
         </div>
         <div className="field">
           <label htmlFor={emailId}>Email</label>
-          <input id={emailId} type="email" name="email" placeholder="email"/>
+          <input id={emailId} type="email" name="email" placeholder="Email"/>
         </div>
         <Link to="/">
           <button className="ui button" type="button">Cancel</button>
