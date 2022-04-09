@@ -15,13 +15,6 @@ export const AddEdit = () => {
   }, [allIds]);
 
   const id = userId ? Number.parseInt(userId, 10) : nextId();
-  let editedUser;
-  if (userId) {
-    editedUser = state.usersObj[id];
-  }
-  const initialName = editedUser ? editedUser.name : '';
-  const initialEmail = editedUser ? editedUser.email : '';
-
   const onSubmit = useCallback(async (data) => {
     const {name, email} = data;
     const requestUrl = userId ?
@@ -44,6 +37,12 @@ export const AddEdit = () => {
 
   const nameId = useId();
   const emailId = useId();
+  let editedUser;
+  if (userId) {
+    editedUser = state.usersObj[id];
+  }
+  const initialName = editedUser ? editedUser.name : '';
+  const initialEmail = editedUser ? editedUser.email : '';
   const {register, handleSubmit, formState: {errors}} = useForm({
     defaultValues: {name: initialName, email: initialEmail}
   });
