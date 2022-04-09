@@ -1,22 +1,29 @@
-const initialState = {users: {}};
-
 export function usersReducer(state, action) {
   switch (action.type) {
+    case 'initial': {
+      const {users} = action;
+      return {
+        usersObj: users.reduce((acc, user) => ({
+          ...acc,
+          [user.id]: user,
+        }), {}),
+      }
+    }
     case 'add': {
       const {user} = action;
       return {
-        users: {
-          ...state.users,
+        usersObj: {
+          ...state.usersObj,
           [action.user.id]: user,
         }
       }
     }
     case 'edit': {
       const {user} = action;
-      const previousUser = state.users[user.id]
+      const previousUser = state.usersObj[user.id]
       return {
-        users: {
-          ...state.users,
+        usersObj: {
+          ...state.usersObj,
           [action.user.id]: {
             ...previousUser,
             ...user,
@@ -27,8 +34,8 @@ export function usersReducer(state, action) {
     case 'delete': {
       const {id} = action;
       return {
-        users: {
-          ...state.users,
+        usersObj: {
+          ...state.usersObj,
           [id]: undefined,
         }
       }
