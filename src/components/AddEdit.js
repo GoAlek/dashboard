@@ -67,9 +67,10 @@ export const AddEdit = () => {
           <input
             id={emailId}
             placeholder="Email"
-            {...register('email', {required: true})}
+            {...register('email', {required: true, pattern: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/})}
           />
           {errors.email?.type === 'required' && "Email is required"}
+          {errors.email?.type === 'pattern' && "Email is not valid"}
         </div>
         <Link to="/">
           <button className="ui button" type="button">Cancel</button>
