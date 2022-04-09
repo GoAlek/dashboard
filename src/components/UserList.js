@@ -12,8 +12,10 @@ export const UserList = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    if (!Object.keys(state.usersObj)?.length) {
+      fetchUsers();
+    }
+  }, [fetchUsers, state.usersObj]);
 
   return (
     <>

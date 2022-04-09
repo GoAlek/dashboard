@@ -1,10 +1,11 @@
 import React, {useCallback, useContext, useId, useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {UsersContext} from '../hooks/useUsers';
 
 export const AddEdit = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
+  const navigate = useNavigate();
   const {dispatch} = useContext(UsersContext);
 
   const createUser = useCallback(async (event) => {
@@ -20,8 +21,9 @@ export const AddEdit = () => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then((response) => response.json())
-      .then((user) => dispatch({type: 'add', user}));
-  }, [dispatch, email, name]);
+      .then((user) => dispatch({type: 'add', user}))
+      .finally(() => navigate('/'));
+  }, [dispatch, email, name, navigate]);
 
   const nameId = useId();
   const emailId = useId();
