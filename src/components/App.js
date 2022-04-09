@@ -4,7 +4,7 @@ import {Header} from './Header';
 import {UserList} from './UserList';
 
 const App = () => (
-  <div className="ui container">
+  <div className="ui container" style={{ marginTop: '10px' }}>
     <BrowserRouter>
       <Header/>
       <Routes>
