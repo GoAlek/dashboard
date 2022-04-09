@@ -1,5 +1,6 @@
-import React, {useCallback, useContext, useId, useState} from 'react';
+import React, {useCallback, useContext, useId} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useForm} from 'react-hook-form';
 import {UsersContext} from '../hooks/useUsers';
 
 export const AddEdit = () => {
@@ -20,12 +21,9 @@ export const AddEdit = () => {
   }
   const initialName = editedUser ? editedUser.name : '';
   const initialEmail = editedUser ? editedUser.email : '';
-  const [name, setName] = useState(initialName);
-  const [email, setEmail] = useState(initialEmail);
 
-  const onSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onSubmit = useCallback(async (data) => {
+    const {name, email} = data;
     const requestUrl = userId ?
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${userId}`
       : 'https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data';
@@ -42,37 +40,34 @@ export const AddEdit = () => {
     }).then((response) => response.json())
       .then((user) => dispatch({type: userId ? 'edit' : 'add', user}))
       .finally(() => navigate('/'));
-  }, [dispatch, email, id, name, navigate, userId]);
+  }, [dispatch, id, navigate, userId]);
 
   const nameId = useId();
   const emailId = useId();
+  const {register, handleSubmit, formState: {errors}} = useForm({
+    defaultValues: {name: initialName, email: initialEmail}
+  });
+  console.log(errors);
+
   return (
     <div className="ui segment">
       <h4>Form</h4>
       <div className="ui divider"/>
-      <form className="ui form" onSubmit={onSubmit}>
+      <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
         <div className="field">
           <label htmlFor={nameId}>Name</label>
           <input
             id={nameId}
-            type="text"
-            name="name"
             placeholder="name"
-            onChange={(event) => setName(event.target.value)}
-            required
-            value={name}
+            {...register('name', {required: true, minLength: 3})}
           />
         </div>
         <div className="field">
           <label htmlFor={emailId}>Email</label>
           <input
             id={emailId}
-            type="email"
-            name="email"
             placeholder="Email"
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            value={email}
+            {...register('email', {required: true})}
           />
         </div>
         <Link to="/">
