@@ -40,7 +40,7 @@ export const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.values(state.usersObj).map((user) => (
+            {Object.values(state.usersObj).map((user) => user && (
               <tr key={user.id}>
                 <td data-label="Id">{user.id}</td>
                 <td data-label="Name">{user.name}</td>
@@ -53,7 +53,9 @@ export const UserList = () => {
                   </Link>
                 </td>
                 <td data-label="Delete">
-                  <div className="ui red button">delete</div>
+                  <Link to={`/delete/${user.id}`}>
+                    <div className="ui red button">delete</div>
+                  </Link>
                 </td>
               </tr>
             ))}
