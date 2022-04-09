@@ -61,6 +61,13 @@ export const UserList = () => {
                 </td>
               </tr>
             ))}
+            {(Object.values(state.usersObj).every(user => user === undefined)) && (
+              <tr>
+                <td>
+                  <h1 className="ui header orange">There are no users in the system</h1>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
