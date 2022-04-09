@@ -1,10 +1,15 @@
-import React, {useCallback, useId, useState} from 'react';
+import React, {useCallback, useContext, useId, useState} from 'react';
 import {Link} from 'react-router-dom';
+import {UsersContext} from '../hooks/useUsers';
 
 export const AddEdit = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const createUser = useCallback(async () => {
+  const {dispatch} = useContext(UsersContext);
+
+  const createUser = useCallback(async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data', {
       method: 'POST',
       body: JSON.stringify({
@@ -15,8 +20,8 @@ export const AddEdit = () => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then((response) => response.json())
-      .then((json) => console.log(json));
-  }, [email, name]);
+      .then((user) => dispatch({type: 'add', user}));
+  }, [dispatch, email, name]);
 
   const nameId = useId();
   const emailId = useId();
@@ -24,7 +29,7 @@ export const AddEdit = () => {
     <div className="ui segment">
       <h4>Form</h4>
       <div className="ui divider"/>
-      <form className="ui form">
+      <form className="ui form" onSubmit={createUser}>
         <div className="field">
           <label htmlFor={nameId}>Name</label>
           <input
@@ -50,7 +55,7 @@ export const AddEdit = () => {
         <Link to="/">
           <button className="ui button" type="button">Cancel</button>
         </Link>
-        <button className="ui green button" type="submit" onSubmit={createUser}>Submit</button>
+        <button className="ui green button" type="submit">Submit</button>
       </form>
     </div>
   )
