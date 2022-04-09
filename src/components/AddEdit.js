@@ -47,28 +47,29 @@ export const AddEdit = () => {
   const {register, handleSubmit, formState: {errors}} = useForm({
     defaultValues: {name: initialName, email: initialEmail}
   });
-  console.log(errors);
 
   return (
     <div className="ui segment">
       <h4>Form</h4>
       <div className="ui divider"/>
       <form className="ui form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="field">
+        <div className={`field ${errors.name ? 'error' : undefined}`}>
           <label htmlFor={nameId}>Name</label>
           <input
             id={nameId}
-            placeholder="name"
+            placeholder="Name"
             {...register('name', {required: true, minLength: 3})}
           />
+          {errors.name?.type === 'required' && "Name is required"}
         </div>
-        <div className="field">
+        <div className={`field ${errors.email ? 'error' : undefined}`}>
           <label htmlFor={emailId}>Email</label>
           <input
             id={emailId}
             placeholder="Email"
             {...register('email', {required: true})}
           />
+          {errors.email?.type === 'required' && "Email is required"}
         </div>
         <Link to="/">
           <button className="ui button" type="button">Cancel</button>
