@@ -2,7 +2,6 @@ import '../App.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Header} from './Header';
 import {AddEdit} from './AddEdit';
-import {Delete} from './Delete';
 import {UserList} from './UserList';
 import {UsersContext, useUsers} from '../hooks/useUsers';
 
@@ -18,7 +17,6 @@ const App = () => {
             <Route path="/" exact element={<UserList/>}/>
             <Route path="/add" element={<AddEdit/>}/>
             <Route path="/edit/:userId" element={<AddEdit/>}/>
-            <Route path="/delete/:userId" element={<Delete/>}/>
           </Routes>
         </BrowserRouter>
       </div>

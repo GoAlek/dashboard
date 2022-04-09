@@ -1,24 +1,20 @@
 import React, {useCallback, useContext} from 'react';
 import ReactDom from 'react-dom';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {UsersContext} from '../hooks/useUsers';
 
-export const Delete = (props) => {
-  const { userId } = useParams();
-  const id = Number.parseInt(userId, 10);
+export const Delete = ({userId, onDismiss}) => {
   const {state, dispatch} = useContext(UsersContext);
-  const userToDelete = state.usersObj[id];
-  const navigate = useNavigate();
+  const userToDelete = state.usersObj[userId];
 
   const onConfirm = useCallback(async () => {
     fetch(`https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${userId}`, {
       method: 'DELETE',
-    }).then(() => dispatch({type: 'delete', id}))
-      .finally(() => navigate('/'));
-  }, [dispatch, id, navigate, userId]);
+    }).then(() => dispatch({type: 'delete', id: userId}));
+  }, [dispatch, userId]);
 
   return ReactDom.createPortal(
-    <div className="ui page dimmer visible active">
+    <div className="ui page dimmer visible active" onClick={onDismiss}>
       <div className="ui mini modal active">
         <div className="header">{`Delete ${userToDelete.name}`}</div>
         <div className="content">

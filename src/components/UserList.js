@@ -1,9 +1,11 @@
-import React, {useCallback, useContext, useEffect} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {UsersContext} from '../hooks/useUsers';
 import {Link} from 'react-router-dom';
+import {Delete} from './Delete';
 
 export const UserList = () => {
   const {state, dispatch} = useContext(UsersContext);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   
   const fetchUsers = useCallback(async () => {
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data')
@@ -53,10 +55,16 @@ export const UserList = () => {
                   </Link>
                 </td>
                 <td data-label="Delete">
-                  <Link to={`/delete/${user.id}`}>
-                    <div className="ui red button">delete</div>
-                  </Link>
+                  <div className="ui red button" onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>
+                    delete
+                  </div>
                 </td>
+                {isDeleteModalOpen && (
+                  <Delete
+                    userId={user.id}
+                    onDismiss={() => setIsDeleteModalOpen(false)}
+                  />
+                )}
               </tr>
             ))}
           </tbody>
