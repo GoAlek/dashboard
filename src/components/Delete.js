@@ -1,6 +1,5 @@
 import React, {useCallback, useContext} from 'react';
 import ReactDom from 'react-dom';
-import {Link} from 'react-router-dom';
 import {UsersContext} from '../hooks/useUsers';
 
 export const Delete = ({userId, onDismiss}) => {
@@ -21,9 +20,7 @@ export const Delete = ({userId, onDismiss}) => {
           Are you sure you want to delete user?
         </div>
         <div className="actions">
-          <Link to="/">
-            <button className="ui black button" type="button">Cancel</button>
-          </Link>
+          <button className="ui black button" type="button" onClick={onDismiss}>Cancel</button>
           <button className="ui red button" type="button" onClick={onConfirm}>
             Delete
           </button>
