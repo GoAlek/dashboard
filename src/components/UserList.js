@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {UsersContext} from '../hooks/useUsers';
 
 export const UserList = () => {
-  const [users, setUsers] = useState([]);
-
+  const {state, dispatch} = useContext(UsersContext);
+  
   const fetchUsers = useCallback(async () => {
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data')
       .then((response) => response.json())
-      .then(users => setUsers(users))
-  }, []);
+      .then(users => dispatch({type: 'initial', users}))
+  }, [dispatch]);
 
   useEffect(() => {
     fetchUsers();
@@ -30,7 +31,7 @@ export const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {Object.values(state.usersObj).map((user) => (
               <tr key={user.id}>
                 <td data-label="Id">{user.id}</td>
                 <td data-label="Name">{user.name}</td>

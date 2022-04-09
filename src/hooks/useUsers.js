@@ -7,7 +7,7 @@ export const UsersContext = createContext({
 });
 
 export const useUsers = () => {
-  const [state, dispatch] = useReducer(usersReducer, {users: {}});
+  const [state, dispatch] = useReducer(usersReducer, {usersObj: {}});
 
   return useMemo(() => ({
     state,
