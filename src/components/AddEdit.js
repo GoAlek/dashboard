@@ -4,21 +4,22 @@ import {UsersContext} from '../hooks/useUsers';
 
 export const AddEdit = () => {
   const { userId } = useParams();
-  const {state, dispatch} = useContext(UsersContext);
-  let editedUser;
-  if (userId) {
-    const id = Number.parseInt(userId, 10);
-    editedUser = state.usersObj[id];
-  }
-  const [name, setName] = useState(editedUser?.name);
-  const [email, setEmail] = useState(editedUser?.email);
   const navigate = useNavigate();
-
+  const {state, dispatch} = useContext(UsersContext);
+  
   const allIds = Object.keys(state.usersObj).map(k => Number.parseInt(k, 10));
   const nextId = useCallback(() => {
     const maxId = Math.max(...allIds);
     return  maxId + 1;
   }, [allIds]);
+
+  const id = userId ? Number.parseInt(userId, 10) : nextId();
+  let editedUser;
+  if (userId) {
+    editedUser = state.usersObj[id];
+  }
+  const [name, setName] = useState(editedUser?.name);
+  const [email, setEmail] = useState(editedUser?.email);
 
   const createUser = useCallback(async (event) => {
     event.preventDefault();
@@ -26,7 +27,7 @@ export const AddEdit = () => {
     await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data', {
       method: 'POST',
       body: JSON.stringify({
-        id: nextId(),
+        id,
         name,
         email,
       }),
@@ -36,7 +37,25 @@ export const AddEdit = () => {
     }).then((response) => response.json())
       .then((user) => dispatch({type: 'add', user}))
       .finally(() => navigate('/'));
-  }, [dispatch, email, name, navigate, nextId]);
+  }, [dispatch, email, id, name, navigate]);
+
+  const updateUser = useCallback(async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    await fetch(`https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id,
+        name,
+        email,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then((response) => response.json())
+      .then((user) => dispatch({type: 'edit', user}))
+      .finally(() => navigate('/'));
+  }, [dispatch, email, id, name, navigate, userId]);
 
   const nameId = useId();
   const emailId = useId();
@@ -44,7 +63,7 @@ export const AddEdit = () => {
     <div className="ui segment">
       <h4>Form</h4>
       <div className="ui divider"/>
-      <form className="ui form" onSubmit={createUser}>
+      <form className="ui form" onSubmit={userId ? updateUser : createUser}>
         <div className="field">
           <label htmlFor={nameId}>Name</label>
           <input
