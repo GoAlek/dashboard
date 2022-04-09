@@ -72,6 +72,7 @@ export const AddEdit = () => {
             name="name"
             placeholder="name"
             onChange={(event) => setName(event.target.value)}
+            required
             value={name}
           />
         </div>
@@ -83,6 +84,7 @@ export const AddEdit = () => {
             name="email"
             placeholder="Email"
             onChange={(event) => setEmail(event.target.value)}
+            required
             value={email}
           />
         </div>
