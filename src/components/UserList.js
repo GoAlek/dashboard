@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useEffect} from 'react';
 import {UsersContext} from '../hooks/useUsers';
+import {Link} from 'react-router-dom';
 
 export const UserList = () => {
   const {state, dispatch} = useContext(UsersContext);
@@ -19,8 +20,11 @@ export const UserList = () => {
       <div className="ui segment">
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <h4>User list</h4>
-          <div className="ui blue button">Add new</div>
+          <Link to="/add">
+            <div className="ui blue button">Add new</div>
+          </Link>
         </div>
+        <div className="ui divider"/>
         <table className="ui compact celled definition table">
           <thead>
             <tr>
@@ -42,7 +46,9 @@ export const UserList = () => {
                 <td data-label="Email">{user.email}</td>
                 <td data-label="City">{user.address.city}</td>
                 <td data-label="Edit">
-                  <div className="ui yellow button">edit</div>
+                  <Link to="/edit">
+                    <div className="ui yellow button">edit</div>
+                  </Link>
                 </td>
                 <td data-label="Delete">
                   <div className="ui red button">delete</div>
