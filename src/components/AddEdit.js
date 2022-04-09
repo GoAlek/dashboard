@@ -23,11 +23,14 @@ export const AddEdit = () => {
   const [name, setName] = useState(initialName);
   const [email, setEmail] = useState(initialEmail);
 
-  const createUser = useCallback(async (event) => {
+  const onSubmit = useCallback(async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    await fetch('https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data', {
-      method: 'POST',
+    const requestUrl = userId ?
+      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${userId}`
+      : 'https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data';
+    await fetch(requestUrl, {
+      method: userId ? 'PUT' : 'POST',
       body: JSON.stringify({
         id,
         name,
@@ -37,25 +40,7 @@ export const AddEdit = () => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then((response) => response.json())
-      .then((user) => dispatch({type: 'add', user}))
-      .finally(() => navigate('/'));
-  }, [dispatch, email, id, name, navigate]);
-
-  const updateUser = useCallback(async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    await fetch(`https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        id,
-        name,
-        email,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }).then((response) => response.json())
-      .then((user) => dispatch({type: 'edit', user}))
+      .then((user) => dispatch({type: userId ? 'edit' : 'add', user}))
       .finally(() => navigate('/'));
   }, [dispatch, email, id, name, navigate, userId]);
 
@@ -65,7 +50,7 @@ export const AddEdit = () => {
     <div className="ui segment">
       <h4>Form</h4>
       <div className="ui divider"/>
-      <form className="ui form" onSubmit={userId ? updateUser : createUser}>
+      <form className="ui form" onSubmit={onSubmit}>
         <div className="field">
           <label htmlFor={nameId}>Name</label>
           <input
