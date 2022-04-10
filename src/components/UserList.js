@@ -5,6 +5,7 @@ import {Delete} from './Delete';
 
 export const UserList = () => {
   const {state, dispatch} = useContext(UsersContext);
+  const [isAscending, setIsAscending] = useState(true);
   const [userToDelete, setUserToDelete] = useState(undefined);
 
   const fetchUsers = useCallback(async () => {
@@ -19,6 +20,22 @@ export const UserList = () => {
     }
   }, [fetchUsers, state.usersObj]);
 
+  const compareUsernames = (firstUser, secondUser) => {
+    const discriminator = isAscending ? 1 : -1;
+    if (!firstUser.username) {
+      return discriminator;
+    }
+    const first = firstUser?.username?.toLowerCase();
+    const second = secondUser?.username?.toLowerCase();
+    if (first < second) {
+      return -discriminator;
+    }
+    if (first > second) {
+      return discriminator;
+    }
+    return 0;
+  }
+
   return (
     <>
       <div className="ui segment">
@@ -29,12 +46,17 @@ export const UserList = () => {
           </Link>
         </div>
         <div className="ui divider"/>
-        <table className="ui compact celled striped table">
+        <table className="ui sortable compact celled striped table">
           <thead>
             <tr>
               <th>Id</th>
               <th>Name</th>
-              <th>Username</th>
+              <th
+                className={`sorted ${isAscending ? 'ascending' : 'descending'}`}
+                onClick={() => setIsAscending(!isAscending)}
+              >
+                Username
+              </th>
               <th>Email</th>
               <th>City</th>
               <th>Edit</th>
@@ -42,7 +64,7 @@ export const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.values(state.usersObj).map((user) => user && (
+            {Object.values(state.usersObj).sort(compareUsernames).map((user) => user && (
               <tr key={user.id}>
                 <td data-label="Id">{user.id}</td>
                 <td data-label="Name">{user.name}</td>
