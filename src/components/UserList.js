@@ -19,6 +19,21 @@ export const UserList = () => {
     }
   }, [fetchUsers, state.usersObj]);
 
+  const compareUsernames = (firstUser, secondUser) => {
+    if (!firstUser.username) {
+      return 1;
+    }
+    const first = firstUser?.username?.toLowerCase();
+    const second = secondUser?.username?.toLowerCase();
+    if (first < second) {
+      return -1;
+    }
+    if (first > second) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
     <>
       <div className="ui segment">
@@ -42,7 +57,7 @@ export const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.values(state.usersObj).map((user) => user && (
+            {Object.values(state.usersObj).sort(compareUsernames).map((user) => user && (
               <tr key={user.id}>
                 <td data-label="Id">{user.id}</td>
                 <td data-label="Name">{user.name}</td>
